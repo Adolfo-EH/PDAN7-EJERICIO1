@@ -1,90 +1,67 @@
-# PDAN7-EJERICIO1
+📊 CASO PROPUESTO: "Sistema de Gestión Transaccional y Control de Membresías - Turkys Gym" 🏋️‍♂️
 
-📊 CASO PROPUESTO: "Sistema de Gestión Integral y Control de Fidelización para Gimnasio" 🏋️‍♂️
 🏦 Contexto del negocio
-El gimnasio "Turkys Gym" es un centro de entrenamiento físico que ofrece diversos servicios de salud y bienestar. Actualmente, el gimnasio maneja su información de forma fragmentada, lo que dificulta el seguimiento de los socios, el control de los vencimientos de membresías y la gestión de inventario de la tienda interna (suplementos y bebidas).
+El gimnasio Turkys Gym es una empresa dedicada al rubro del bienestar físico que ofrece servicios de entrenamiento y venta de productos nutricionales. Actualmente, el negocio maneja su información de manera aislada: las ventas de productos no están vinculadas correctamente a los comprobantes de pago, y el control de socios no permite un seguimiento histórico claro de quién autorizó cada ingreso o venta.
 
-La administración ha detectado que muchos socios ingresan con membresías vencidas debido a la falta de un sistema de validación en tiempo real. Además, no se cuenta con un registro histórico de la evolución física de los clientes ni de sus preferencias de compra, lo que impide realizar campañas de marketing dirigidas.
-
-Por ello, se busca desarrollar una base de datos robusta que permita:
-
-Controlar el acceso y la vigencia de las membresías de forma automatizada.
-
-Gestionar el inventario y las ventas de la tienda de suplementos.
-
-Monitorear el rendimiento financiero y la asistencia de los socios.
-
-Generar alertas de renovación para evitar la fuga de clientes.
+Para mejorar su competitividad y orden administrativo, el gimnasio requiere un sistema de base de datos relacional que integre la gestión de su personal (staff), la fidelización de sus clientes, el control de stock de productos y la facturación detallada de cada transacción.
 
 🎯 Objetivo del sistema
-Diseñar una base de datos que permita:
+Diseñar una base de datos normalizada que permita:
 
-Registrar la información detallada de socios y personal (entrenadores/administrativos).
+Centralizar los datos personales de trabajadores y clientes para evitar redundancia.
 
-Gestionar diversos planes de entrenamiento y membresías.
+Gestionar el catálogo de productos por categorías y controlar el inventario.
 
-Controlar el flujo de caja mediante el registro de pagos y ventas de productos.
+Registrar la venta de productos y membresías mediante un esquema de cabecera-detalle.
 
-Administrar el control de acceso mediante registros de asistencia.
+Emitir comprobantes de pago vinculados a cada transacción comercial.
 
-Evaluar el progreso físico de los socios mediante métricas corporales.
+Controlar el acceso diario de socios (asistencia) validando la vigencia de sus membresías.
 
 🧩 Alcance funcional
-1. 👤 Gestión de Socios y Staff
-El sistema debe diferenciar entre:
+1. 👤 Gestión de Identidades (Personas)
+El sistema debe centralizar los datos básicos en una entidad núcleo:
 
-Socios: DNI, nombres, apellidos, fecha de nacimiento, contacto, y estado de salud inicial.
+Persona: Registro de DNI, nombres, apellidos, fecha de nacimiento, sexo, dirección, teléfono y correo.
 
-Staff: Datos personales, cargo (entrenador, recepcionista), horario de turno y sueldo.
+Cliente: Vinculado a una persona, registra su estado de fidelización.
 
-2. 💳 Membresías y Planes
-El gimnasio ofrece planes flexibles:
+Trabajador: Vinculado a una persona, incluye su cargo y horario.
 
-Tipos: Diario, Mensual, Trimestral, Anual.
+2. 🔐 Seguridad y Usuarios
+Para la operación del sistema, se debe gestionar:
 
-Categorías: Solo máquinas, Full (incluye clases grupales), VIP (incluye personal trainer).
+Usuarios: Solo los trabajadores autorizados tendrán un nickname y clave para acceder al sistema y realizar transacciones.
 
-Cada plan tiene un precio base y una duración en días.
+3. 📦 Catálogo de Productos y Membresías
+El gimnasio ofrece tanto bienes físicos como servicios:
 
-3. 📝 Contratos y Renovaciones
-Cuando un socio adquiere un plan:
+Categorías: Clasificación de ítems (Suplementos, Bebidas, Ropa, Planes de Entrenamiento).
 
-Se registra la fecha de inicio y se calcula automáticamente la fecha de fin.
+Producto: Registro de nombre, precio de venta, stock actual y stock mínimo.
 
-Estado del contrato: Activo, Congelado (por salud), Vencido.
+Membresía: Vinculación de un cliente con un tipo de membresía (Mensual, Trimestral, Anual) que define una fecha de inicio y una fecha de fin de acceso.
 
-Un socio puede haber tenido muchos contratos a lo largo del tiempo (historial).
+4. 💰 Proceso de Ventas y Facturación
+Cada vez que se realiza una transacción:
 
-4. 🏪 Gestión de Ventas (Tienda)
-El gimnasio vende productos adicionales:
+Venta (Cabecera): Registra la fecha, el método de pago (Efectivo, Tarjeta, Yape/Plin), el monto total, el cliente que compra y el usuario que realiza la venta.
 
-Productos: Nombre, categoría (proteínas, hidratantes, ropa), stock mínimo, stock actual y precio de venta.
+Detalle de Venta: Desglose de los productos o membresías adquiridas, indicando cantidad, precio unitario y descuentos.
 
-Ventas: Registro de qué producto se vendió, cantidad, fecha y quién realizó la venta.
+Comprobante: Generación de la serie y el número correlativo (Boleta o Factura) para legalizar la venta.
 
-5. 🕒 Control de Asistencia y Acceso
-Cada vez que un socio llega:
+5. 🕒 Control de Operaciones Diarias
 
-Se registra la fecha y hora de entrada.
-
-El sistema debe validar si el socio tiene un contrato Activo. Si está vencido, se genera una alerta.
-
-6. 📈 Seguimiento Antropométrico
-Para dar valor agregado, los entrenadores registran:
-
-Fecha de evaluación.
-
-Peso, % de grasa, masa muscular, medidas de pecho, brazo, cintura, etc.
-
-Esto permite ver la evolución del socio en el tiempo.
+Asistencias: Registro de cada ingreso al gimnasio, capturando la fecha, hora, el cliente que ingresa y el trabajador (usuario) que valida dicho ingreso.
 
 📈 Reglas de negocio clave
-Un socio solo puede tener un contrato Activo a la vez.
+Tanto clientes como trabajadores deben estar registrados previamente en la tabla maestra de personas.
 
-La asistencia solo se registra si el contrato vigente está pagado y no vencido.
+Una venta puede contener múltiples productos (detalle), pero genera un único comprobante de pago.
 
-El stock de productos debe disminuir automáticamente con cada venta.
+El stock de los productos debe descontarse automáticamente al confirmarse una venta.
 
-Un entrenador puede estar asignado a varios socios, pero un socio solo tiene un entrenador de cabecera en sus planes VIP.
+El tipo de membresía define la duración en días, la cual se utiliza para calcular la fecha de vencimiento al momento de la compra.
 
-Los precios de las membresías pueden variar, pero se debe respetar el precio pactado en el contrato firmado.
+Solo los trabajadores con un registro activo en la tabla de usuarios pueden registrar ventas y asistencias.
